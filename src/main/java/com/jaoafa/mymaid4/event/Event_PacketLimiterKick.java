@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -11,12 +11,13 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.EBan;
 import com.jaoafa.mymaid4.lib.EventPremise;
 import com.jaoafa.mymaid4.lib.MyMaidData;
 import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.kyori.adventure.text.serializer.plain.PlainComponentSerializer;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -31,7 +32,8 @@ import java.util.Random;
 import java.util.UUID;
 
 public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, EventPremise {
-    static Map<UUID, Integer> limited = new HashMap<>();
+    static final Map<UUID, Integer> limited = new HashMap<>();
+
     @Override
     public String description() {
         return "PacketLimiterによるキック時に通知を行います。";
@@ -39,7 +41,7 @@ public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, 
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
-        String reason = PlainComponentSerializer.plain().serialize(event.reason());
+        String reason = PlainTextComponentSerializer.plainText().serialize(event.reason());
         if (!reason.equalsIgnoreCase("You are sending too many packets!") &&
             !reason.equalsIgnoreCase("You are sending too many packets, :(")) {
             return;
@@ -84,7 +86,7 @@ public class Event_PacketLimiterKick extends MyMaidLibrary implements Listener, 
 
         Location teleportLoc = new Location(Bukkit.getWorld("Jao_Afa"), x, 70, z);
         event.getPlayer().teleport(teleportLoc);
-        System.out.println("[PacketLimiter_AutoTP] teleport to Jao_Afa " + x + " 70 " + z);
+        Main.getMyMaidLogger().info("[PacketLimiter_AutoTP] teleport to Jao_Afa " + x + " 70 " + z);
 
         if (MyMaidData.getJaotanChannel() == null) {
             return;

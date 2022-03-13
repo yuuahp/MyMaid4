@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.event;
 
+import com.jaoafa.mymaid4.Main;
 import com.jaoafa.mymaid4.lib.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -27,11 +28,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "迷惑コマンドの制限を行います。";
-    }
-
     static final Map<String, AntiCommand> antiCommandMap = new HashMap<>();
 
     static {
@@ -68,6 +64,18 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
         antiCommandMap.put("/advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/minecraft:advancement", new AntiCmd_Advancement());
         antiCommandMap.put("/login", new AntiCmd_Login());
+    }
+
+    static void autoHistoryAdd(Player player, String prefix, String details) {
+        if (isAMRV(player)) {
+            return;
+        }
+        Historyjao.getHistoryjao(player).autoAdd(prefix, details);
+    }
+
+    @Override
+    public String description() {
+        return "迷惑コマンドの制限を行います。";
     }
 
     @EventHandler
@@ -294,7 +302,7 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
     static class AntiCmd_KickCmd implements AntiCommand {
         @Override
         public void execute(PlayerCommandPreprocessEvent event, Player player, String[] args) {
-            System.out.println("args.length: " + args.length);
+            Main.getMyMaidLogger().info("args.length: " + args.length);
             if (args.length >= 2 &&
                 (args[1].equalsIgnoreCase(player.getName()) ||
                     args[1].equalsIgnoreCase("me") ||
@@ -379,18 +387,11 @@ public class Event_AntiProblemCommand extends MyMaidLibrary implements Listener,
             if (MyMaidData.getJaotanChannel() != null) {
                 MyMaidData.getJaotanChannel().sendMessage(String.format("プレイヤー「%s」がコマンド「%s」を実行したため、キックしました。", player.getName(), command)).queue();
             } else {
-                System.out.println("MyMaidData.getJaotanChannel is null");
+                Main.getMyMaidLogger().info("MyMaidData.getJaotanChannel is null");
             }
 
             event.setCancelled(true);
             autoHistoryAdd(player, "loginコマンドの実行", "(" + String.join(" ", args) + ")");
         }
-    }
-
-    static void autoHistoryAdd(Player player, String prefix, String details) {
-        if (isAMRV(player)) {
-            return;
-        }
-        Historyjao.getHistoryjao(player).autoAdd(prefix, details);
     }
 }

@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -41,11 +41,6 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener, EventPremise {
-    @Override
-    public String description() {
-        return "プレイヤーログイン前に各種チェック等を行います。";
-    }
-
     @EventHandler(priority = EventPriority.LOW)
     public static void OnEvent_PlayerCheckPreLogin(AsyncPlayerPreLoginEvent event) {
         String name = event.getName();
@@ -125,7 +120,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
             public void run() {
                 MySQLDBManager MySQLDBManager = MyMaidData.getMainMySQLDBManager();
                 if (MySQLDBManager == null) return;
-                try{
+                try {
                     Connection conn = MySQLDBManager.getConnection();
                     try (PreparedStatement statement = conn.prepareStatement(
                         "INSERT INTO login (player, uuid, ip, host, countryName, city, permission) VALUES (?, ?, ?, ?, ?, ?, ?);")) {
@@ -178,7 +173,7 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         event.disallow(Result.KICK_FULL, component);
         if (MyMaidData.getJaotanChannel() == null) return;
         MyMaidData.getJaotanChannel().sendMessage(
-            "[MyMaid3-PreLoginCheck] " + event.getName() + " -> `" + reason + "`").queue();
+            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + "`").queue();
     }
 
     private static void disallow(AsyncPlayerPreLoginEvent event, Component message, String reason, String data) {
@@ -192,6 +187,11 @@ public class Event_PlayerCheckPreLogin extends MyMaidLibrary implements Listener
         event.disallow(Result.KICK_FULL, component);
         if (MyMaidData.getJaotanChannel() == null) return;
         MyMaidData.getJaotanChannel().sendMessage(
-            "[MyMaid3-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
+            "[MyMaid4-PreLoginCheck] " + event.getName() + " -> `" + reason + " (" + data + ")`").queue();
+    }
+
+    @Override
+    public String description() {
+        return "プレイヤーログイン前に各種チェック等を行います。";
     }
 }

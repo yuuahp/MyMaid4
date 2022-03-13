@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -11,6 +11,7 @@
 
 package com.jaoafa.mymaid4.httpServer;
 
+import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import com.sun.net.httpserver.HttpServer;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -20,6 +21,11 @@ import java.net.InetSocketAddress;
 
 public class MyMaidServer extends BukkitRunnable {
     static HttpServer server;
+
+    public static void stopServer() {
+        server.stop(0);
+    }
+
     @Override
     public void run() {
         int port = 31001;
@@ -36,11 +42,7 @@ public class MyMaidServer extends BukkitRunnable {
             server.createContext("/docs", new HTTP_GetDocs());
             server.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            MyMaidLibrary.reportError(getClass(), e);
         }
-    }
-
-    public static void stopServer(){
-        server.stop(0);
     }
 }

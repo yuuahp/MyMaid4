@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -51,6 +51,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -59,6 +60,11 @@ import java.util.stream.Collectors;
  * MyMaid全体で利用されるスタティックメソッドをまとめたライブラリクラス
  */
 public class MyMaidLibrary {
+
+    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
+    static final Pattern URL_PATTERN = Pattern.compile(
+        "([a-z0-9]{2,}://(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[-\\w_]+\\.[a-z]{2,}?)(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
+        Pattern.CASE_INSENSITIVE);
 
     /**
      * CommandSenderに対してメッセージを送信します。
@@ -75,20 +81,15 @@ public class MyMaidLibrary {
         ).build());
     }
 
-    // https://github.com/ErdbeerbaerLP/DiscordIntegration-Core/blob/564b32d29605322f927853ee62a6af938a0af7d3/src/main/java/de/erdbeerbaerlp/dcintegration/common/util/MessageUtils.java#L31-L35
-    static final Pattern URL_PATTERN = Pattern.compile(
-        "([a-z0-9]{2,}://(?:(?:[0-9]{1,3}\\.){3}[0-9]{1,3}|[-\\w_]+\\.[a-z]{2,}?)(?::[0-9]{1,5})?.*?(?=[!\"\u00A7 \n]|$))",
-        Pattern.CASE_INSENSITIVE);
-
     /**
      * エラーをDiscordのreportチャンネルへ報告します。
      *
      * @param e Throwable
      */
     public static void reportError(Class<?> clazz, Throwable e) {
-        e.printStackTrace();
+        Main.getMyMaidLogger().log(Level.WARNING, e.getMessage(), e);
 
-        if(Main.getMyMaidConfig().isDevelopmentServer()){
+        if (Main.getMyMaidConfig().isDevelopmentServer()) {
             return;
         }
 
@@ -476,58 +477,6 @@ public class MyMaidLibrary {
     }
 
     /**
-     * 指定されたLocationに一番近いプレイヤーを取得します。
-     *
-     * @param loc Location
-     *
-     * @return 一番近いプレイヤー
-     */
-    @Nullable
-    public Player getNearestPlayer(Location loc) {
-        double closest = Double.MAX_VALUE;
-        Player closestp = null;
-        for (Player i : loc.getWorld().getPlayers()) {
-            double dist = i.getLocation().distance(loc);
-            if (closest == Double.MAX_VALUE || dist < closest) {
-                closest = dist;
-                closestp = i;
-            }
-        }
-        return closestp;
-    }
-
-    /**
-     * オンラインプレイヤーのサジェスト (これではなくPlayerArgumentを使うことをお勧め)
-     *
-     * @param context CommandContext
-     * @param current current String
-     *
-     * @return 該当するプレイヤー
-     */
-    public List<String> suggestOnlinePlayers(final CommandContext<CommandSender> context, final String current) {
-        return Bukkit.getServer().getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
-            .collect(Collectors.toList());
-    }
-
-    /**
-     * オフラインプレイヤーのサジェスト
-     *
-     * @param context CommandContext
-     * @param current current String
-     *
-     * @return 該当するプレイヤー
-     */
-    public List<String> suggestOfflinePlayers(final CommandContext<CommandSender> context, final String current) {
-        return Arrays.stream(Bukkit.getServer().getOfflinePlayers())
-            .map(OfflinePlayer::getName)
-            .filter(Objects::nonNull)
-            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
-            .collect(Collectors.toList());
-    }
-
-    /**
      * ワールド名のサジェスト
      *
      * @param context CommandContext
@@ -580,81 +529,38 @@ public class MyMaidLibrary {
         MyMaidData.setSpamTime(player.getUniqueId(), System.currentTimeMillis());
     }
 
-    /**
-     * プラグインが有効であるかどうかを取得します。
-     *
-     * @return プラグインが有効であるか
-     */
-    protected boolean isDisabledPlugin(String pluginName) {
-        Plugin plugin = Main.getJavaPlugin().getServer().getPluginManager().getPlugin(pluginName);
-        return plugin == null || !plugin.isEnabled();
-    }
-
     public static void debug(String message) {
         if (!Main.getMyMaidConfig().isDevelopmentServer()) {
             return;
         }
-        System.out.printf("DEBUG -> %s%n", message);
+        Main.getMyMaidLogger().info("DEBUG -> %s".formatted(message));
     }
 
     public static NamedTextColor getNamedTextColor(String color) {
-        switch (color.toUpperCase()) {
-            case "BLACK":
-                return NamedTextColor.BLACK;
-            case "DARK_BLUE":
-                return NamedTextColor.DARK_BLUE;
-            case "DARK_GREEN":
-                return NamedTextColor.DARK_GREEN;
-            case "DARK_AQUA":
-                return NamedTextColor.DARK_AQUA;
-            case "DARK_RED":
-                return NamedTextColor.DARK_RED;
-            case "DARK_PURPLE":
-                return NamedTextColor.DARK_PURPLE;
-            case "GOLD":
-                return NamedTextColor.GOLD;
-            case "GRAY":
-                return NamedTextColor.GRAY;
-            case "DARK_GRAY":
-                return NamedTextColor.DARK_GRAY;
-            case "BLUE":
-                return NamedTextColor.BLUE;
-            case "GREEN":
-                return NamedTextColor.GREEN;
-            case "AQUA":
-                return NamedTextColor.AQUA;
-            case "RED":
-                return NamedTextColor.RED;
-            case "LIGHT_PURPLE":
-                return NamedTextColor.LIGHT_PURPLE;
-            case "YELLOW":
-                return NamedTextColor.YELLOW;
-            case "WHITE":
-                return NamedTextColor.WHITE;
-            default:
-                return null;
-        }
+        return switch (color.toUpperCase()) {
+            case "BLACK" -> NamedTextColor.BLACK;
+            case "DARK_BLUE" -> NamedTextColor.DARK_BLUE;
+            case "DARK_GREEN" -> NamedTextColor.DARK_GREEN;
+            case "DARK_AQUA" -> NamedTextColor.DARK_AQUA;
+            case "DARK_RED" -> NamedTextColor.DARK_RED;
+            case "DARK_PURPLE" -> NamedTextColor.DARK_PURPLE;
+            case "GOLD" -> NamedTextColor.GOLD;
+            case "GRAY" -> NamedTextColor.GRAY;
+            case "DARK_GRAY" -> NamedTextColor.DARK_GRAY;
+            case "BLUE" -> NamedTextColor.BLUE;
+            case "GREEN" -> NamedTextColor.GREEN;
+            case "AQUA" -> NamedTextColor.AQUA;
+            case "RED" -> NamedTextColor.RED;
+            case "LIGHT_PURPLE" -> NamedTextColor.LIGHT_PURPLE;
+            case "YELLOW" -> NamedTextColor.YELLOW;
+            case "WHITE" -> NamedTextColor.WHITE;
+            default -> null;
+        };
     }
 
     @Nullable
     public static NamedTextColor getNamedTextColor(ChatColor color) {
         return getNamedTextColor(color.name());
-    }
-
-    protected boolean getLookingAt(Player player, Player target) {
-        Location eye = player.getEyeLocation();
-        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
-        double dot = toEntity.normalize().dot(eye.getDirection());
-
-        return dot > 0.99D;
-    }
-
-    protected boolean isEntityLooking(Player player, LivingEntity target) {
-        Location eye = player.getEyeLocation();
-        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
-        double dot = toEntity.normalize().dot(eye.getDirection());
-
-        return dot > 0.99D;
     }
 
     /**
@@ -687,11 +593,99 @@ public class MyMaidLibrary {
                 .clickEvent(ClickEvent.openUrl(url.content()))).build());
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted") // isNotSignは不適切
     public static boolean isSign(Material material) {
         return Arrays.stream(Material.values())
             .filter(m -> m.data == Sign.class || m.data == WallSign.class)
             .anyMatch(m -> m == material);
+    }
+
+    /**
+     * Locationオブジェクトを「ワールド X Y Z」の文字列形式で返します。
+     *
+     * @param loc Locationオブジェクト
+     *
+     * @return 「ワールド X Y Z」の文字列形式
+     */
+    public static String formatLocation(Location loc) {
+        return loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
+    }
+
+    /**
+     * 指定されたLocationに一番近いプレイヤーを取得します。
+     *
+     * @param loc Location
+     *
+     * @return 一番近いプレイヤー
+     */
+    @Nullable
+    public Player getNearestPlayer(Location loc) {
+        double closest = Double.MAX_VALUE;
+        Player closestp = null;
+        for (Player i : loc.getWorld().getPlayers()) {
+            double dist = i.getLocation().distance(loc);
+            if (closest == Double.MAX_VALUE || dist < closest) {
+                closest = dist;
+                closestp = i;
+            }
+        }
+        return closestp;
+    }
+
+    /**
+     * オンラインプレイヤーのサジェスト (これではなくPlayerArgumentを使うことをお勧め)
+     *
+     * @param context CommandContext
+     * @param current current String
+     *
+     * @return 該当するプレイヤー
+     */
+    public List<String> suggestOnlinePlayers(final CommandContext<CommandSender> context, final String current) {
+        return Bukkit.getServer().getOnlinePlayers().stream()
+            .map(Player::getName)
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * オフラインプレイヤーのサジェスト
+     *
+     * @param context CommandContext
+     * @param current current String
+     *
+     * @return 該当するプレイヤー
+     */
+    public List<String> suggestOfflinePlayers(final CommandContext<CommandSender> context, final String current) {
+        return Arrays.stream(Bukkit.getServer().getOfflinePlayers())
+            .map(OfflinePlayer::getName)
+            .filter(Objects::nonNull)
+            .filter(s -> s.toLowerCase().startsWith(current.toLowerCase()))
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * プラグインが有効であるかどうかを取得します。
+     *
+     * @return プラグインが有効であるか
+     */
+    protected boolean isDisabledPlugin(String pluginName) {
+        Plugin plugin = Main.getJavaPlugin().getServer().getPluginManager().getPlugin(pluginName);
+        return plugin == null || !plugin.isEnabled();
+    }
+
+    protected boolean getLookingAt(Player player, Player target) {
+        Location eye = player.getEyeLocation();
+        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
+        double dot = toEntity.normalize().dot(eye.getDirection());
+
+        return dot > 0.99D;
+    }
+
+    protected boolean isEntityLooking(Player player, LivingEntity target) {
+        Location eye = player.getEyeLocation();
+        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
+        double dot = toEntity.normalize().dot(eye.getDirection());
+
+        return dot > 0.99D;
     }
 
     /**
@@ -717,16 +711,5 @@ public class MyMaidLibrary {
             }
         }
         return jaoium;
-    }
-
-    /**
-     * Locationオブジェクトを「ワールド X Y Z」の文字列形式で返します。
-     *
-     * @param loc Locationオブジェクト
-     *
-     * @return 「ワールド X Y Z」の文字列形式
-     */
-    public static String formatLocation(Location loc) {
-        return loc.getWorld().getName() + " " + loc.getBlockX() + " " + loc.getBlockY() + " " + loc.getBlockZ();
     }
 }

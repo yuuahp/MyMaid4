@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -19,7 +19,7 @@ import com.jaoafa.mymaid4.lib.MyMaidLibrary;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-public class Event_ServerException extends MyMaidLibrary implements Listener, EventPremise {
+public class Event_ServerExceptionCatcher extends MyMaidLibrary implements Listener, EventPremise {
     @Override
     public String description() {
         return "サーバで例外エラーが発生した場合、報告します。";
@@ -28,6 +28,9 @@ public class Event_ServerException extends MyMaidLibrary implements Listener, Ev
     @EventHandler
     public void onServerException(ServerExceptionEvent event) {
         ServerException exception = event.getException();
+        if (Main.getRollbar() == null) {
+            return;
+        }
         Main.getRollbar().critical(exception, "onServerExceptionEvent");
     }
 }

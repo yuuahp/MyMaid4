@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -31,12 +31,10 @@ public class Historyjao {
     static final Map<UUID, Historyjao> cache = new HashMap<>();
 
     final OfflinePlayer player;
+    final List<Data> data = new ArrayList<>();
     String name;
     UUID uuid;
     boolean found = false;
-    final boolean notify = true;
-    final List<Data> data = new ArrayList<>();
-
     long DBSyncTime = -1L;
 
     private Historyjao(OfflinePlayer offplayer) {
@@ -252,10 +250,6 @@ public class Historyjao {
 
     public boolean isFound() {
         return found;
-    }
-
-    public boolean isNotify() {
-        return notify;
     }
 
     public static class Data {

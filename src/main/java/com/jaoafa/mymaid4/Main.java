@@ -1,7 +1,7 @@
 /*
  * jaoLicense
  *
- * Copyright (c) 2021 jao Minecraft Server
+ * Copyright (c) 2022 jao Minecraft Server
  *
  * The following license applies to this project: jaoLicense
  *
@@ -62,6 +62,7 @@ import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -69,8 +70,8 @@ import java.util.stream.Collectors;
 public final class Main extends JavaPlugin {
     private static Main Main = null;
     private static MyMaidConfig config = null;
-    private MinecraftHelp<CommandSender> minecraftHelp;
     private static Rollbar rollbar = null;
+    private MinecraftHelp<CommandSender> minecraftHelp;
 
     @Override
     public void onEnable() {
@@ -117,10 +118,11 @@ public final class Main extends JavaPlugin {
             try {
                 rollbar.close(true);
             } catch (Exception e) {
-                e.printStackTrace();
+                getMyMaidLogger().log(Level.WARNING, e.getMessage(), e);
             }
         }
     }
+
 
     private void registerCommand() {
         getLogger().info("----- registerCommand -----");
@@ -138,7 +140,6 @@ public final class Main extends JavaPlugin {
             });
         } catch (Exception e) {
             getLogger().warning("コマンドの登録に失敗しました。PaperCommandManagerを取得できません。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
             return;
         }
@@ -197,7 +198,7 @@ public final class Main extends JavaPlugin {
             .withHandler(MinecraftExceptionHandler.ExceptionType.COMMAND_EXECUTION, e ->
                 {
                     final Throwable cause = e.getCause();
-                    cause.printStackTrace();
+                    getMyMaidLogger().log(Level.WARNING, cause.getMessage(), cause);
 
                     MyMaidLibrary.reportError(getClass(), e);
 
@@ -251,10 +252,10 @@ public final class Main extends JavaPlugin {
                     CommandPremise cmdPremise = (CommandPremise) instance;
 
                     Command.Builder<CommandSender> builder = manager.commandBuilder(
-                        cmdPremise.details().getName(),
-                        ArgumentDescription.of(cmdPremise.details().getDescription()),
-                        cmdPremise.details().getAliases().toArray(new String[0])
-                    )
+                            cmdPremise.details().getName(),
+                            ArgumentDescription.of(cmdPremise.details().getDescription()),
+                            cmdPremise.details().getAliases().toArray(new String[0])
+                        )
                         .permission(String.format("mymaid.%s", cmdPremise.details().getName().toLowerCase()))
                         .meta(CommandMeta.DESCRIPTION, cmdPremise.details().getDescription());
 
@@ -314,14 +315,12 @@ public final class Main extends JavaPlugin {
                     getLogger().info(String.format("%s: コマンドの登録に成功しました。", commandName));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: コマンドの登録に失敗しました。", commandName));
-                    e.printStackTrace();
                     MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.putGetDocsData("commands", commands);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("コマンドの登録に失敗しました。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
     }
@@ -363,7 +362,7 @@ public final class Main extends JavaPlugin {
                             .filter(m -> m.getParameterCount() == 1)
                             .filter(m -> Arrays.stream(m.getDeclaredAnnotations())
                                 .anyMatch(a -> a.annotationType().equals(EventHandler.class)))
-                            .collect(Collectors.toList());
+                            .toList();
 
                         JSONArray methodArray = new JSONArray();
                         eventMethods.forEach(method -> {
@@ -388,14 +387,12 @@ public final class Main extends JavaPlugin {
                     }
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException | NoClassDefFoundError e) {
                     getLogger().warning(String.format("%s: イベントの登録に失敗しました。", name));
-                    e.printStackTrace();
                     MyMaidLibrary.reportError(getClass(), e);
                 }
             }
             MyMaidData.putGetDocsData("events", events);
         } catch (ClassNotFoundException | IOException e) {
             getLogger().warning("イベントの登録に失敗しました。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
     }
@@ -424,15 +421,19 @@ public final class Main extends JavaPlugin {
                     getJavaPlugin().getLogger().info(String.format("%s: Discordイベントの登録に成功しました。", clazz.getSimpleName()));
                 } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                     getJavaPlugin().getLogger().warning(String.format("%s: Discordイベントの登録に成功しました。", name));
-                    e.printStackTrace();
                     MyMaidLibrary.reportError(Main.class, e);
                 }
             }
         } catch (ClassNotFoundException | IOException e) {
             getJavaPlugin().getLogger().warning("Discordイベントの登録に失敗しました。");
-            e.printStackTrace();
             MyMaidLibrary.reportError(Main.class, e);
         }
+    }
+
+    private void scheduleTasks() {
+        new MyMaidServer().runTaskAsynchronously(this);
+        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
+        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
     }
 
     private void initCreativeInventoryItems() {
@@ -466,15 +467,8 @@ public final class Main extends JavaPlugin {
             }
             MyMaidData.setCreativeInventoryWithNBTs(items);
         } catch (IOException e) {
-            e.printStackTrace();
             MyMaidLibrary.reportError(getClass(), e);
         }
-    }
-
-    private void scheduleTasks() {
-        new MyMaidServer().runTaskAsynchronously(this);
-        new Task_Pigeon().runTaskTimerAsynchronously(this, 200L, 12000L); // 10秒後から10分毎
-        new Task_TabList().runTaskTimerAsynchronously(this, 200L, 1200L); // 10秒後から1分毎
     }
 
     public static WorldEditPlugin getWorldEdit() {
@@ -511,4 +505,5 @@ public final class Main extends JavaPlugin {
     public static Rollbar getRollbar() {
         return rollbar;
     }
+
 }
