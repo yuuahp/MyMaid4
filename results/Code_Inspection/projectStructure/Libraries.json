@@ -3,7 +3,7 @@
     {
       "name": "Maven: io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220321.184811-51.jar!/"
+        "jar://$MAVEN_REPOSITORY$/io/papermc/paper/paper-api/1.18.2-R0.1-SNAPSHOT/paper-api-1.18.2-R0.1-20220408.005652-67.jar!/"
       ]
     },
     {
@@ -277,9 +277,9 @@
       ]
     },
     {
-      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.12",
+      "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.16",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.12/jaosuperachievement2-2.5.12.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/jaoafa/jaosuperachievement2/2.5.16/jaosuperachievement2-2.5.16.jar!/"
       ]
     },
     {
@@ -385,9 +385,9 @@
       ]
     },
     {
-      "name": "Maven: org.json:json:20211205",
+      "name": "Maven: org.json:json:20220320",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/org/json/json/20211205/json-20211205.jar!/"
+        "jar://$MAVEN_REPOSITORY$/org/json/json/20220320/json-20220320.jar!/"
       ]
     },
     {
@@ -433,15 +433,15 @@
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.9",
+      "name": "Maven: com.sk89q.worldedit:worldedit-bukkit:7.2.10",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-bukkit/7.2.9/worldedit-bukkit-7.2.9.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-bukkit/7.2.10/worldedit-bukkit-7.2.10.jar!/"
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.9",
+      "name": "Maven: com.sk89q.worldedit.worldedit-libs:bukkit:7.2.10",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/bukkit/7.2.9/bukkit-7.2.9.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/bukkit/7.2.10/bukkit-7.2.10.jar!/"
       ]
     },
     {
@@ -463,15 +463,15 @@
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.9",
+      "name": "Maven: com.sk89q.worldedit:worldedit-core:7.2.10",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-core/7.2.9/worldedit-core-7.2.9.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-core/7.2.10/worldedit-core-7.2.10.jar!/"
       ]
     },
     {
-      "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.9",
+      "name": "Maven: com.sk89q.worldedit.worldedit-libs:core:7.2.10",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/core/7.2.9/core-7.2.9.jar!/"
+        "jar://$MAVEN_REPOSITORY$/com/sk89q/worldedit/worldedit-libs/core/7.2.10/core-7.2.10.jar!/"
       ]
     },
     {
@@ -585,7 +585,7 @@
     {
       "name": "Maven: de.tr7zw:functional-annotations:0.1-SNAPSHOT",
       "roots": [
-        "jar://$MAVEN_REPOSITORY$/de/tr7zw/functional-annotations/0.1-SNAPSHOT/functional-annotations-0.1-20210226.114524-6.jar!/"
+        "jar://$MAVEN_REPOSITORY$/de/tr7zw/functional-annotations/0.1-SNAPSHOT/functional-annotations-0.1-20220407.142433-7.jar!/"
       ]
     },
     {
