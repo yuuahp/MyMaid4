@@ -30,7 +30,7 @@ body:
     id: screenshots
     attributes:
       label: スクリーンショット
-      description: エラーメッセージなどが表示されていたり、状況が分かりやすい場合はスクリーンショット・エラーログなどを添付してください。画像は [Imgur](http://imgur.com/) などを使ってアップロードしてください。
+      description: エラーメッセージなどが表示されていたり、状況が分かりやすい場合はスクリーンショット・エラーログなどを添付してください。画像は <a href="http://imgur.com/" target="_blank">Imgur</a> などを使ってアップロードしてください。
     validations:
       required: false
   - type: textarea
