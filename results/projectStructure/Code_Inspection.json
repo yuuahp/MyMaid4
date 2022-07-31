@@ -90,11 +90,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-api:4.10.1",
+          "name": "Maven: net.kyori:adventure-api:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-key:4.10.1",
+          "name": "Maven: net.kyori:adventure-key:4.11.0",
           "type": "Library"
         },
         {
@@ -106,19 +106,23 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-minimessage:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-minimessage:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-serializer-gson:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-serializer-legacy:4.11.0",
           "type": "Library"
         },
         {
-          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.10.1",
+          "name": "Maven: net.kyori:adventure-text-serializer-plain:4.11.0",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: net.kyori:adventure-text-logger-slf4j:4.11.0",
           "type": "Library"
         },
         {
@@ -178,7 +182,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.9",
+          "name": "Maven: net.dv8tion:JDA:5.0.0-alpha.17",
           "type": "Library"
         },
         {
@@ -186,7 +190,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: org.jetbrains:annotations:16.0.1",
+          "name": "Maven: org.jetbrains:annotations:23.0.0",
           "type": "Library"
         },
         {
@@ -194,7 +198,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: org.apache.commons:commons-collections4:4.1",
+          "name": "Maven: org.apache.commons:commons-collections4:4.4",
           "type": "Library"
         },
         {
@@ -202,7 +206,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.fasterxml.jackson.core:jackson-databind:2.10.1",
+          "name": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.2",
+          "type": "Library"
+        },
+        {
+          "name": "Maven: com.fasterxml.jackson.core:jackson-databind:2.13.2.2",
           "type": "Library"
         },
         {
@@ -218,15 +226,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.16",
+          "name": "Maven: com.jaoafa:jaosuperachievement2:2.5.25",
           "type": "Library"
         },
         {
-          "name": "Maven: org.apache.commons:commons-lang3:3.12.0",
-          "type": "Library"
-        },
-        {
-          "name": "Maven: com.maxmind.geoip2:geoip2:3.0.0",
+          "name": "Maven: com.maxmind.geoip2:geoip2:3.0.1",
           "type": "Library"
         },
         {
@@ -234,11 +238,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: com.fasterxml.jackson.core:jackson-core:2.13.1",
-          "type": "Library"
-        },
-        {
-          "name": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.1",
+          "name": "Maven: com.fasterxml.jackson.core:jackson-annotations:2.13.2",
           "type": "Library"
         },
         {
@@ -418,7 +418,7 @@
           "type": "Library"
         },
         {
-          "name": "Maven: de.tr7zw:item-nbt-api:2.9.2",
+          "name": "Maven: de.tr7zw:item-nbt-api:2.10.0",
           "type": "Library"
         },
         {
@@ -426,11 +426,11 @@
           "type": "Library"
         },
         {
-          "name": "Maven: de.tr7zw:nbt-injector:2.9.2",
+          "name": "Maven: de.tr7zw:nbt-injector:2.10.0",
           "type": "Library"
         },
         {
-          "name": "Maven: org.javassist:javassist:3.28.0-GA",
+          "name": "Maven: org.javassist:javassist:3.29.0-GA",
           "type": "Library"
         }
       ]
