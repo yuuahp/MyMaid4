@@ -23,7 +23,9 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
@@ -32,6 +34,7 @@ import org.bukkit.*;
 import org.bukkit.block.data.type.Sign;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -398,7 +401,7 @@ public class MyMaidLibrary {
      * @param name  プレイヤー名
      * @param text  テキスト
      */
-    public static void chatFake(NamedTextColor color, String name, String text) {
+    public static void chatFake(TextColor color, String name, String text) {
         chatFake(color, name, text, true);
     }
 
@@ -410,15 +413,28 @@ public class MyMaidLibrary {
      * @param text          テキスト
      * @param sendToDiscord Discordにも送信するか
      */
-    public static void chatFake(NamedTextColor color, String name, String text, boolean sendToDiscord) {
+    public static void chatFake(TextColor color, String name, String text, boolean sendToDiscord) {
+        chatFake(color, name, Component.text(text), sendToDiscord);
+    }
+
+    /**
+     * フェイクのチャットを送信します。
+     *
+     * @param color         四角色
+     * @param name          プレイヤー名
+     * @param component     テキスト
+     * @param sendToDiscord Discordにも送信するか
+     */
+    public static void chatFake(TextColor color, String name, Component component, boolean sendToDiscord) {
         Bukkit.getServer().sendMessage(Component.text().append(
             Component.text("[" + sdfTimeFormat(new Date()) + "]", NamedTextColor.GRAY),
             Component.text("■", color),
             Component.text(name, NamedTextColor.WHITE),
             Component.text(":"),
             Component.space(),
-            Component.text(text)
+            component
         ));
+        String text = PlainTextComponentSerializer.plainText().serialize(component);
         if (sendToDiscord && MyMaidData.getServerChatChannel() != null)
             MyMaidData.getServerChatChannel()
                 .sendMessage("**" + DiscordEscape(name) + "**: " + DiscordEscape(ChatColor.stripColor(text)))
@@ -700,9 +716,15 @@ public class MyMaidLibrary {
         return dot > 0.99D;
     }
 
-    protected boolean isEntityLooking(Player player, LivingEntity target) {
+    protected boolean isEntityLooking(Player player, Entity target) {
         Location eye = player.getEyeLocation();
-        Vector toEntity = target.getEyeLocation().toVector().subtract(eye.toVector());
+        Location location;
+        if (target instanceof LivingEntity) {
+            location = ((LivingEntity) target).getEyeLocation();
+        } else {
+            location = target.getLocation();
+        }
+        Vector toEntity = location.toVector().subtract(eye.toVector());
         double dot = toEntity.normalize().dot(eye.getDirection());
 
         return dot > 0.99D;
@@ -731,5 +753,9 @@ public class MyMaidLibrary {
             }
         }
         return jaoium;
+    }
+
+    public void wrapGetAchievement(Player player, String achievement) {
+
     }
 }

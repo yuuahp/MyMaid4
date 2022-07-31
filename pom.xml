@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0-SNAPSHOT</version>
+                <version>3.3.0</version>
                 <configuration>
                     <finalName>MyMaid4</finalName>
                     <relocations>
@@ -58,10 +58,18 @@
                     </relocations>
                     <filters>
                         <filter>
+                            <artifact>com.jaoafa:jaosuperachievement2</artifact>
+                            <excludes>
+                                <exclude>plugin.yml</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
                             <artifact>*:*</artifact>
                             <excludes>
+                                <exclude>module-info.class</exclude>
+                                <exclude>*module-info</exclude>
                                 <exclude>META-INF*</exclude>
-                                <exclude>META-INF/*</exclude>
+                                <exclude>META-INF/**</exclude>
                                 <exclude>LICENSE</exclude>
                             </excludes>
                         </filter>
@@ -77,10 +85,19 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <filters>
                                 <filter>
+                                    <artifact>com.jaoafa:jaosuperachievement2</artifact>
+                                    <excludes>
+                                        <exclude>plugin.yml</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
                                     <artifact>*:*</artifact>
                                     <excludes>
                                         <exclude>module-info.class</exclude>
+                                        <exclude>*module-info</exclude>
                                         <exclude>META-INF*</exclude>
+                                        <exclude>META-INF/**</exclude>
+                                        <exclude>LICENSE</exclude>
                                     </excludes>
                                 </filter>
                             </filters>
@@ -163,7 +180,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.0.0-alpha.9</version>
+            <version>5.0.0-alpha.17</version>
             <exclusions>
                 <exclusion>
                     <groupId>club.minnced</groupId>
@@ -187,13 +204,13 @@
         <dependency>
             <groupId>com.jaoafa</groupId>
             <artifactId>jaosuperachievement2</artifactId>
-            <version>2.5.16</version>
+            <version>2.5.25</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.maxmind.geoip2</groupId>
             <artifactId>geoip2</artifactId>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </dependency>
         <dependency>
             <groupId>com.vexsoftware</groupId>
@@ -249,12 +266,12 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.9.2</version>
+            <version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>nbt-injector</artifactId>
-            <version>2.9.2</version>
+            <version>2.10.0</version>
         </dependency>
     </dependencies>
 </project>
