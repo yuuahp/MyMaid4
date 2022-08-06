@@ -1,16 +1,18 @@
 {
-  "total": 2,
+  "total": 3,
   "tools inspection": {
-    "Code Inspection": 2
+    "Code Inspection": 3
   },
   "attributes": {
     "vcs": {
       "sarifIdea": {
         "repositoryUri": "https://github.com/yuuahp/MyMaid4",
-        "revisionId": "fad1fd2f3809b49ecf3d48c7e303f394af68a89e",
+        "revisionId": "44bc224dad56eb52fe0aaa0721edd33645c4ee03",
         "branch": "master"
       }
     },
-    "deviceId": "200820300000000-1ac5-b6e9-76fa-03a2d94a7cac"
+    "deviceId": "200820300000000-1ac5-b6e9-76fa-03a2d94a7cac",
+    "jobUrl": "https://github.com/yuuahp/MyMaid4/actions/runs/2809295070",
+    "repoUrl": "https://github.com/yuuahp/MyMaid4"
   }
 }
